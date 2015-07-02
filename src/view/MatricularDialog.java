@@ -310,6 +310,7 @@ public class MatricularDialog extends javax.swing.JDialog {
         //Cargar comboboxes
         CicloJpaController cJc = new CicloJpaController(entityMan.getInstance());
         List<Ciclo> listaCiclo = cJc.findCicloEntities();
+        cbSemetre.removeAllItems();
         for(Ciclo c: listaCiclo){
             cbSemetre.addItem(c);
         }

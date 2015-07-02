@@ -5,6 +5,23 @@
  */
 package view;
 
+import controller.CicloJpaController;
+import controller.MaestriaJpaController;
+import controller.entityMan;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Ciclo;
+import model.Maestria;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
+
 /**
  *
  * @author Ricardo
@@ -17,6 +34,10 @@ public class ReporteListaAlumnos extends javax.swing.JDialog {
     public ReporteListaAlumnos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        llenarComboCiclo();
+        llenarComboMaestria();
+        llenarComboNroCiclo();
+        
     }
 
     /**
@@ -33,9 +54,9 @@ public class ReporteListaAlumnos extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox();
-        jComboBox2 = new javax.swing.JComboBox();
-        jComboBox3 = new javax.swing.JComboBox();
+        cbCiclo = new javax.swing.JComboBox();
+        cbMaestria = new javax.swing.JComboBox();
+        cbNroCiclo = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -48,6 +69,11 @@ public class ReporteListaAlumnos extends javax.swing.JDialog {
         jLabel3.setText("Ciclo:");
 
         jButton1.setText("Generar Reporte");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -61,9 +87,9 @@ public class ReporteListaAlumnos extends javax.swing.JDialog {
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox3, 0, 432, Short.MAX_VALUE))
+                    .addComponent(cbCiclo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbMaestria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbNroCiclo, 0, 432, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(241, Short.MAX_VALUE)
@@ -76,15 +102,15 @@ public class ReporteListaAlumnos extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbMaestria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbNroCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
                 .addContainerGap(21, Short.MAX_VALUE))
@@ -109,6 +135,31 @@ public class ReporteListaAlumnos extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String path = "C:\\Users\\Ricardo\\Documents\\NetBeansProjects\\SistemasPagosPG\\src\\reportes\\report1.jasper";
+        JasperReport jas = null;
+        
+        Maestria maestria = (Maestria) cbMaestria.getSelectedItem();
+        Ciclo ciclo = (Ciclo) cbCiclo.getSelectedItem();
+        Map mapa = new HashMap();
+        mapa.put("nroCiclo",(Integer) cbNroCiclo.getSelectedItem());
+        mapa.put("idMaestria",maestria.getIdMaestria());
+        mapa.put("idCiclo", ciclo.getIdCiclo());
+        
+        try {
+            jas = (JasperReport) JRLoader.loadObjectFromFile(path);
+            JasperPrint Jp = JasperFillManager.fillReport(jas,mapa ,AccesoDB.getConnection());
+            JasperViewer jv = new JasperViewer(Jp);
+            this.dispose();
+            jv.setVisible(true);
+            
+        } catch (JRException ex) {
+            Logger.getLogger(prueba.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -153,13 +204,38 @@ public class ReporteListaAlumnos extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox cbCiclo;
+    private javax.swing.JComboBox cbMaestria;
+    private javax.swing.JComboBox cbNroCiclo;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
+    private void llenarComboCiclo() {
+        CicloJpaController Cjc = new CicloJpaController(entityMan.getInstance());
+        List<Ciclo> cicloJ = Cjc.findCicloEntities();
+        cbCiclo.removeAllItems();
+        for(Ciclo c : cicloJ){
+          cbCiclo.addItem(c);
+        }
+    }
+    private void llenarComboMaestria() {
+        MaestriaJpaController Mjc = new MaestriaJpaController(entityMan.getInstance());
+        List<Maestria> MaestriaL = Mjc.findMaestriaEntities();
+        cbMaestria.removeAllItems();
+        for(Maestria M : MaestriaL){
+          cbMaestria.addItem(M);
+        }
+    }    
+
+    private void llenarComboNroCiclo() {
+        cbNroCiclo.addItem(1);
+        cbNroCiclo.addItem(2);
+        cbNroCiclo.addItem(3);
+        cbNroCiclo.addItem(4);
+        
+    }
 }
