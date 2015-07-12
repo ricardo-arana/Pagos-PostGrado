@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="866ac8aa-c3d6-4689-9731-aab1e6a4a37a">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="99"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="idCiclo" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -35,8 +35,7 @@ WHERE matricula.`ciclo_idCiclo` = $P{idCiclo}
 AND maestria.`idMaestria` = $P{idMaestria}
 AND matricula.`nroCiclo` = $P{nroCiclo}
 ORDER BY
-	 maestria.`nombreMaestria`, ciclo.`NombreCiclo`, matricula.`nroCiclo`,pago.`Cuota`, estudiante.`apellido`, pago.`montoSaldo` DESC
-]]>
+	 maestria.`nombreMaestria`, ciclo.`NombreCiclo`, matricula.`nroCiclo`,pago.`Cuota`, estudiante.`apellido`, pago.`montoSaldo` DESC]]>
 	</queryString>
 	<field name="estudiante_nombre" class="java.lang.String"/>
 	<field name="estudiante_apellido" class="java.lang.String"/>
@@ -210,7 +209,7 @@ ORDER BY
 	<detail>
 		<band height="30">
 			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="19" width="555" height="1" uuid="0e7512c2-c71a-4178-a468-c985f99b2658"/>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="19" width="801" height="1" uuid="0e7512c2-c71a-4178-a468-c985f99b2658"/>
 			</line>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="693" y="0" width="108" height="18" uuid="5bfd4b65-50d6-4d8c-b355-1a64fbb7c454"/>
@@ -262,12 +261,12 @@ ORDER BY
 	<pageFooter>
 		<band height="17">
 			<textField>
-				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="ba91e327-e296-49bc-9579-4217ed1313c1"/>
+				<reportElement mode="Opaque" x="0" y="4" width="761" height="13" backcolor="#E6E6E6" uuid="ba91e327-e296-49bc-9579-4217ed1313c1"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="5917b677-93e6-422c-a8fd-9b2224fccc27"/>
+				<reportElement mode="Opaque" x="761" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="5917b677-93e6-422c-a8fd-9b2224fccc27"/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="EEEEE dd MMMMM yyyy">
