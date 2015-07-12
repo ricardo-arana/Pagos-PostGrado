@@ -9,12 +9,16 @@ import controller.CicloJpaController;
 import controller.MaestriaJpaController;
 import controller.MatriculaJpaController;
 import controller.entityMan;
+import controller.exceptions.NonexistentEntityException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import model.Ciclo;
 import model.Estudiante;
 import model.Maestria;
 import model.Matricula;
+import static model.Matricula_.nroCiclo;
 
 /**
  *
@@ -63,6 +67,7 @@ public class MatricularDialog extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblMatricula = new javax.swing.JTable();
         btnMatricular = new javax.swing.JButton();
+        btnAnular = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Matricular");
@@ -183,20 +188,33 @@ public class MatricularDialog extends javax.swing.JDialog {
             }
         });
 
+        btnAnular.setText("Anular Matricula");
+        btnAnular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnularActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(161, 161, 161)
+                        .addComponent(btnMatricular, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(159, 159, 159)
-                .addComponent(btnMatricular, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(157, 157, 157)
+                .addComponent(btnAnular, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -207,10 +225,12 @@ public class MatricularDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAnular)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(btnMatricular)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
         );
 
         pack();
@@ -233,6 +253,17 @@ public class MatricularDialog extends javax.swing.JDialog {
         mJc.create(matricula);
         iniciarData();
     }//GEN-LAST:event_btnMatricularActionPerformed
+
+    private void btnAnularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnularActionPerformed
+        Matricula matricula = (Matricula) tblMatricula.getValueAt( tblMatricula.getSelectedRow(),0);
+        MatriculaJpaController mJc = new MatriculaJpaController(entityMan.getInstance());
+        try {
+            mJc.destroy(matricula.getIdmatricula());
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(MatricularDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        iniciarData();
+    }//GEN-LAST:event_btnAnularActionPerformed
 
     /**
      * @param args the command line arguments
@@ -277,6 +308,7 @@ public class MatricularDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAnular;
     private javax.swing.JButton btnMatricular;
     private javax.swing.JComboBox cbCiclo;
     private javax.swing.JComboBox cbSemetre;
@@ -302,7 +334,7 @@ public class MatricularDialog extends javax.swing.JDialog {
         MatriculaJpaController MaJc = new MatriculaJpaController(entityMan.getInstance());
         List<Matricula> listaMatricula = MaJc.findByEstudiante(estudiante);
         for(Matricula ma: listaMatricula){
-            Object fila[]={ma.getNroCiclo(),ma.getCicloidCiclo().getNombreCiclo()};
+            Object fila[]={ma,ma.getCicloidCiclo().getNombreCiclo()};
             df.addRow(fila);
             
         }

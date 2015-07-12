@@ -71,13 +71,13 @@ public class pagoView extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtNroVoucher = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtFechaPago = new javax.swing.JFormattedTextField();
         txtAgregarPago = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         txtMonto = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtTipoPago = new javax.swing.JTextField();
         txtDescMonto = new javax.swing.JLabel();
+        txtFechaP = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -112,8 +112,6 @@ public class pagoView extends javax.swing.JFrame {
         jLabel3.setText("Nro de Voucher:");
 
         jLabel4.setText("Fecha de pago :");
-
-        txtFechaPago.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
 
         txtAgregarPago.setText("Agregar Pago");
         txtAgregarPago.addActionListener(new java.awt.event.ActionListener() {
@@ -151,15 +149,6 @@ public class pagoView extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtFechaPago)
-                                    .addComponent(txtMonto)
-                                    .addComponent(txtAgregarPago, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addComponent(jLabel3)
                                         .addGap(18, 18, 18))
@@ -168,7 +157,16 @@ public class pagoView extends javax.swing.JFrame {
                                         .addGap(30, 30, 30)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtNroVoucher, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
-                                    .addComponent(txtTipoPago))))
+                                    .addComponent(txtTipoPago)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtFechaP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtMonto)
+                                    .addComponent(txtAgregarPago, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtDescMonto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(36, Short.MAX_VALUE))
@@ -195,10 +193,10 @@ public class pagoView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtNroVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4)
-                    .addComponent(txtFechaPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFechaP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -206,7 +204,7 @@ public class pagoView extends javax.swing.JFrame {
                     .addComponent(txtDescMonto, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtAgregarPago)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();
@@ -287,12 +285,7 @@ public class pagoView extends javax.swing.JFrame {
         String cuotaTem = "0";
         float montoTemp = 0;
         List<Pago> listarPagos = pJc.pagosFiltro(e, e.getMaestria(), c);
-
-        try {
-            FechaPago = formatter.parse(txtFechaPago.getText());
-        } catch (ParseException ex) {
-            Logger.getLogger(pagoView.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        FechaPago = txtFechaP.getDate();
         float monto = Float.parseFloat(txtMonto.getText());
 
         Pago pago = new Pago();
@@ -366,7 +359,7 @@ public class pagoView extends javax.swing.JFrame {
     private javax.swing.JButton txtAgregarPago;
     private javax.swing.JLabel txtDescMonto;
     private javax.swing.JTextField txtEstudiante;
-    private javax.swing.JFormattedTextField txtFechaPago;
+    private com.toedter.calendar.JDateChooser txtFechaP;
     private javax.swing.JTextField txtMonto;
     private javax.swing.JTextField txtNroVoucher;
     private javax.swing.JTextField txtTipoPago;

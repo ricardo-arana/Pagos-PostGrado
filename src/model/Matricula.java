@@ -109,7 +109,7 @@ public class Matricula implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Matricula[ idmatricula=" + idmatricula + " ]";
+        return nroCiclo;
     }
     
 }

@@ -139,6 +139,14 @@ public class PagoJpaController implements Serializable {
                 .getResultList();
         
     }
+      public List<Pago> pagoXestudiante(Estudiante idEstudiante){
+        EntityManager em = getEntityManager();
+        return  em.createNamedQuery("Pago.pagosPorEstudiante")
+                .setParameter("idEstudiante", idEstudiante)
+                .getResultList();
+        
+    }  
+    
     public int getPagoCount() {
         EntityManager em = getEntityManager();
         try {

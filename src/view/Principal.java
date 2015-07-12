@@ -46,6 +46,7 @@ public class Principal extends javax.swing.JFrame {
         RegCiclo = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         mConsulta = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
@@ -98,6 +99,14 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(mConsulta);
+
+        jMenuItem5.setText("Consulta de Pago por Estudiante");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem5);
 
         jMenuBar1.add(jMenu2);
 
@@ -164,6 +173,12 @@ public class Principal extends javax.swing.JFrame {
         RLA.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+        ConsultaPagoXEstu ConsultaPxE = new ConsultaPagoXEstu(this, false);
+        ConsultaPxE.setVisible(true);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -210,6 +225,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem mConsulta;
     private javax.swing.JMenuItem mRegistrarEstudiante;
     private javax.swing.JMenuItem mRegistrarPago;
